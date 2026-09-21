@@ -1,0 +1,11 @@
+# .NET
+**/bin/
+**/obj/
+appsettings.Development.json
+
+# Node (ambos frontends)
+**/node_modules/
+**/.env
+
+# Archivos subidos
+**/UploadedFiles/
