@@ -41,5 +41,29 @@ namespace Ingresantes.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public string GenerateTokenPostulante(Guid postulanteId, out DateTime expiraEn)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim("PostulanteId", postulanteId.ToString()),
+                new Claim("TipoAcceso", "Postulante")   // para distinguirlo de un token de RRHH
+            };
+
+            expiraEn = DateTime.UtcNow.AddHours(2); // sesión corta, no necesita durar como la de RRHH
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: expiraEn,
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 }

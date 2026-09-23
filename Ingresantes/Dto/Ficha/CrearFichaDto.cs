@@ -18,8 +18,8 @@ namespace Ingresantes.Dto.Ficha
         string numeroCelular,
         string numeroFijo,
         string email,
-        int sexo, 
-        int estadoCivil,
+        string sexo, 
+        string estadoCivil,
         List<CrearEducacionDto>? Educacion,
         List<CrearExperienciaDto>? Experiencia
     );

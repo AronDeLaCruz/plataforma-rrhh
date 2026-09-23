@@ -18,8 +18,8 @@ namespace Ingresantes.Models
         public string NumeroFijo {get; set;}
         public string Email {get; set;}
 
-        public int Sexo {get; set;}
-        public int EstadoCivil {get;set;}
+        public string Sexo {get; set;}  = default!;
+        public string EstadoCivil {get;set;}  = default!;
 
 
     }

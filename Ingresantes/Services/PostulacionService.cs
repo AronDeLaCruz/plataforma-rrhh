@@ -15,12 +15,15 @@ namespace Ingresantes.Services
         private readonly RrhhDbContext _context;
         private readonly IFileStorageService _fileStorage;
         private readonly ILogger<PostulacionService> _logger;
+        private readonly ITokenService _tokenService;
 
-        public PostulacionService(RrhhDbContext context, IFileStorageService fileStorage, ILogger<PostulacionService> logger)
+        public PostulacionService(RrhhDbContext context, IFileStorageService fileStorage, 
+                            ILogger<PostulacionService> logger, ITokenService tokenService)
         {
             _context = context;
             _fileStorage = fileStorage;
             _logger = logger;
+            _tokenService = tokenService;
         }
 
         private static string GenerarCodigoAcceso()
@@ -121,16 +124,19 @@ namespace Ingresantes.Services
 
         public async Task<PostulacionRespuestaDto?> VerificarAccesoAsync(string numeroDoc, string codigo)
         {
-            var postulante = await _context.Postulacion
+            var postulacion = await _context.Postulacion
                                     .Include(a => a.Postulante)
                                     .Include(p => p.Puesto)
                                     .FirstOrDefaultAsync(p => p.Postulante.DNI == numeroDoc && p.CodigoAccesoHash == codigo);
 
             //if (postulante?.CodigoAccesoHash is not string codigoAccesoHash) return null;
             //if ((codigo, codigoAccesoHash)) return null;//!BCrypt.Net.BCrypt.Verify
- 
+            if (postulacion is null) return null;
 
-            return MapToRespuestDto(postulante.Postulante,postulante);
+            var token = _tokenService.GenerateTokenPostulante(postulacion.Postulante.Id, out var expiraEn);
+
+            var dto = MapToRespuestDto(postulacion.Postulante, postulacion);
+            return dto with { Token = token }; // usando "with" porque es un record
         }
 
         public async Task<PostulacionRespuestaDto?> GetByIdAsync(Guid id)
@@ -201,6 +207,5 @@ namespace Ingresantes.Services
                 postulacion.FechaPostulacion,
                 postulacion.CodigoAccesoHash
             );
-        
     }
 }

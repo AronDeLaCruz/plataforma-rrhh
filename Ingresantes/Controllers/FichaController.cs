@@ -1,5 +1,6 @@
 using Ingresantes.Dto.Ficha;
 using Ingresantes.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -13,9 +14,15 @@ public class FichaController : ControllerBase
         _fichaService = fichaService;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<FichaRespuestaDto>> Create([FromBody] CrearFichaDto dto)
+    [HttpPost("{id:guid}/ficha")]
+    [Authorize(Policy = "SoloPostulante")]
+    public async Task<ActionResult<FichaRespuestaDto>> Create(Guid id, [FromBody] CrearFichaDto dto)
     {
+        var postulanteIdDelToken = User.FindFirst("PostulanteId")?.Value;
+
+        if (postulanteIdDelToken != id.ToString())
+            return Forbid(); // el token es válido, pero no es SU perfil
+
         var result = await _fichaService.subirFicha(dto);
         return CreatedAtAction(nameof(GetById), new {id = result.Id}, result);
     }

@@ -7,6 +7,7 @@ namespace Ingresantes.Dto.Postulaciones
         string Puesto,
         string Estado,
         DateTime FechaPostulacion,
-        string codigoAcceso
+        string codigoAcceso,
+        string? Token = null
     );
 }
