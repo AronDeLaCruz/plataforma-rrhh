@@ -26,7 +26,23 @@ namespace Ingresantes.Services
             var ficha = new Ficha
             {
                 Id = Guid.NewGuid(),
-                Nombres = dto.nombres
+                Nombres = dto.nombres,
+                PostulacionId = dto.idPostulacion,
+                ApellidoMaterno = dto.apellidoMaterno,
+                ApellidoPaterno = dto.apellidoPaterno,
+                TipoDocumento = dto.tipoDocumento,
+                NumeroDocumento = dto.numeroDocumento,
+                FechaNacimiento = dto.fechaNacimiento,
+                Edad = dto.edad,
+                Direccion = dto.direccion,
+                Departamento = dto.departament,
+                Provincia = dto.provincia,
+                Distrito = dto.distrito,
+                NumeroCelular = dto.numeroCelular,
+                NumeroFijo = dto.numeroFijo,
+                Email = dto.email,
+                Sexo = dto.sexo,
+                EstadoCivil = dto.estadoCivil,
             };
 
             _context.fichas.Add(ficha);
@@ -39,6 +55,7 @@ namespace Ingresantes.Services
                     _context.Educacion.Add(new Educacion
                     {
                         Id = Guid.NewGuid(),
+                        PostulacionId = dto.idPostulacion,
                         Institucion = educacion.Institucion,
                         TituloObtenido = educacion.TituloObtenido,
                         NivelEducativo = educacion.NivelEducativo
@@ -53,6 +70,7 @@ namespace Ingresantes.Services
                     _context.Experiencias.Add(new Experiencia
                     {
                         Id = Guid.NewGuid(),
+                        PostulacionId = dto.idPostulacion,
                         Nombre = exp.Nombre,
                         Descripcion = exp.Descripcion,
                         Puesto = exp.Puesto
@@ -67,7 +85,9 @@ namespace Ingresantes.Services
         public async Task<FichaRespuestaDto> GetByIdAsync(Guid id)
         {
             var ficha = await _context.fichas
-                .FirstOrDefaultAsync(p => p.Id == id)
+                .Include(e => e.Educacion)
+                //.Include(x => x.E)
+                .FirstOrDefaultAsync(p => p.PostulacionId == id)
                 ?? throw new NotFoundException("Ficha no encontrada");
 
             return MapToRespuestaDto(ficha);
@@ -75,7 +95,24 @@ namespace Ingresantes.Services
 
         private static FichaRespuestaDto MapToRespuestaDto(Ficha ficha) =>
             new(
-                ficha.PostulacionId
+                ficha.Id,
+                ficha.Nombres,
+                ficha.ApellidoPaterno,
+                ficha.ApellidoMaterno,
+                ficha.TipoDocumento,
+                ficha.NumeroDocumento,
+                ficha.FechaNacimiento,
+                ficha.Edad,
+                ficha.Direccion,
+                ficha.Departamento,
+                ficha.Provincia,
+                ficha.Distrito,
+                ficha.NumeroCelular,
+                ficha.NumeroFijo,
+                ficha.Email,
+                ficha.Sexo,
+                ficha.EstadoCivil,
+                ficha.Educacion, []
             );
      }
 

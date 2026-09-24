@@ -90,7 +90,7 @@ namespace Ingresantes.Services
                     _context.Educacion.Add(new Educacion
                     {
                         Id = Guid.NewGuid(),
-                        PostulanteId = postulante.Id,
+                        PostulacionId = postulacion.Id,
                         Institucion = educacion.Institucion,
                         TituloObtenido = educacion.TituloObtenido,
                         NivelEducativo = educacion.NivelEducativo
@@ -105,7 +105,7 @@ namespace Ingresantes.Services
                     _context.Experiencias.Add(new Experiencia
                     {
                         Id = Guid.NewGuid(),
-                        PostulanteId = postulante.Id,
+                        PostulacionId = postulacion.Id,
                         Nombre = exp.Nombre,
                         Descripcion = exp.Descripcion,
                         Puesto = exp.Puesto
@@ -133,7 +133,7 @@ namespace Ingresantes.Services
             //if ((codigo, codigoAccesoHash)) return null;//!BCrypt.Net.BCrypt.Verify
             if (postulacion is null) return null;
 
-            var token = _tokenService.GenerateTokenPostulante(postulacion.Postulante.Id, out var expiraEn);
+            var token = _tokenService.GenerateTokenPostulante(postulacion.Id, out var expiraEn);
 
             var dto = MapToRespuestDto(postulacion.Postulante, postulacion);
             return dto with { Token = token }; // usando "with" porque es un record
@@ -188,7 +188,7 @@ namespace Ingresantes.Services
             _context.documentos.Add(new Documentos
             {
                 Id = Guid.NewGuid(),
-                PostulanteId = applicantId,
+                PostulacionId = applicantId,
                 TipoDocumento = tipoDocumento,
                 NombreDocumento = file.FileName,
                 UrlArchivo = url

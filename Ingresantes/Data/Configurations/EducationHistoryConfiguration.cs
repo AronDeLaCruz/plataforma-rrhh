@@ -11,9 +11,9 @@ public class EducationHistoryConfiguration: IEntityTypeConfiguration<Educacion>
         builder.Property(e => e.TituloObtenido).HasMaxLength(150).IsRequired();
         builder.Property(e => e.NivelEducativo).HasMaxLength(50).IsRequired();
 
-        builder.HasOne<Postulante>()
-            .WithMany(a => a.Education)
-            .HasForeignKey(e => e.PostulanteId)
+        builder.HasOne<Postulacion>()
+            .WithMany()
+            .HasForeignKey(e => e.PostulacionId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

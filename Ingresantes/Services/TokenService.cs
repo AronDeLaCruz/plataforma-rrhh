@@ -42,14 +42,14 @@ namespace Ingresantes.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public string GenerateTokenPostulante(Guid postulanteId, out DateTime expiraEn)
+        public string GenerateTokenPostulante(Guid postulacionId, out DateTime expiraEn)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-                new Claim("PostulanteId", postulanteId.ToString()),
+                new Claim("PostulanteId", postulacionId.ToString()),
                 new Claim("TipoAcceso", "Postulante")   // para distinguirlo de un token de RRHH
             };
 

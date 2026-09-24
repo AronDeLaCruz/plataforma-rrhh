@@ -4,6 +4,7 @@ using Ingresantes.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ingresantes.Migrations
 {
     [DbContext(typeof(RrhhDbContext))]
-    partial class RrhhDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260923221908_CambiarRelacionesAPostulacion")]
+    partial class CambiarRelacionesAPostulacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,6 @@ namespace Ingresantes.Migrations
             modelBuilder.Entity("Ingresantes.Models.Educacion", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Institucion")
@@ -85,8 +87,6 @@ namespace Ingresantes.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PostulacionId");
 
                     b.HasIndex("PostulanteId");
 
@@ -383,7 +383,7 @@ namespace Ingresantes.Migrations
                 {
                     b.HasOne("Ingresantes.Models.Postulacion", null)
                         .WithMany()
-                        .HasForeignKey("PostulacionId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

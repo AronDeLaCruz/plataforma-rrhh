@@ -11,9 +11,9 @@ public class ApplicantDocumentConfiguration : IEntityTypeConfiguration<Documento
         builder.Property(d => d.NombreDocumento).HasMaxLength(255).IsRequired();
         builder.Property(d => d.UrlArchivo).HasMaxLength(500).IsRequired();
 
-        builder.HasOne<Postulante>()
-            .WithMany(a => a.Documents)
-            .HasForeignKey(d => d.PostulanteId)
+        builder.HasOne<Postulacion>()
+            .WithMany()
+            .HasForeignKey(d => d.Id)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
