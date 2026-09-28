@@ -1,3 +1,4 @@
+using Ingresantes.Dto.Common;
 using Ingresantes.Models;
 
 namespace Ingresantes.Dto.Ficha
@@ -20,7 +21,7 @@ namespace Ingresantes.Dto.Ficha
         string email,
         string sexo, 
         string estadoCivil,
-        List<Educacion>? Educacion,
-        List<Experiencia>? Experiencia
+        List<EducacionDto>? Educacion,
+        List<ExperienciaDto>? Experiencia
     );
 }

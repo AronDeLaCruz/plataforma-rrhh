@@ -21,7 +21,7 @@ namespace Ingresantes.Models
         public string Sexo {get; set;}  = default!;
         public string EstadoCivil {get;set;}  = default!;
 
-        public List<Educacion>? Educacion {get; set;}
+       // public List<Educacion>? Educacion {get; set;}
 
     }
 }

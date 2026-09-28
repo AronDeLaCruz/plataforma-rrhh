@@ -1,4 +1,5 @@
 using Ingresantes.Data;
+using Ingresantes.Dto.Common;
 using Ingresantes.Dto.Ficha;
 using Ingresantes.Exceptions;
 using Ingresantes.Models;
@@ -79,21 +80,38 @@ namespace Ingresantes.Services
             }
 
             await _context.SaveChangesAsync();
-            return MapToRespuestaDto(ficha);
+
+            var educacionCreada = await _context.Educacion
+                .Where(e => e.PostulacionId == ficha.PostulacionId)
+                .ToListAsync();
+
+            var experienciaCreada = await _context.Experiencias
+                .Where(e => e.PostulacionId == ficha.PostulacionId)
+                .ToListAsync();
+
+
+            return MapToRespuestaDto(ficha, educacionCreada,experienciaCreada);
         }
 
         public async Task<FichaRespuestaDto> GetByIdAsync(Guid id)
         {
-            var ficha = await _context.fichas
-                .Include(e => e.Educacion)
-                //.Include(x => x.E)
-                .FirstOrDefaultAsync(p => p.PostulacionId == id)
-                ?? throw new NotFoundException("Ficha no encontrada");
+            var ficha = await _context.fichas.FirstOrDefaultAsync(p => p.PostulacionId == id);
 
-            return MapToRespuestaDto(ficha);
+            if(ficha is null) return null;
+
+            var educacion = await _context.Educacion
+                                          .Where(e => e.PostulacionId == ficha.PostulacionId)
+                                          .ToListAsync();
+            
+            var experiencia = await _context.Experiencias
+                                .Where(e => e.PostulacionId == ficha.PostulacionId)
+                                .ToListAsync();
+
+            return MapToRespuestaDto(ficha, educacion, experiencia);
         }
 
-        private static FichaRespuestaDto MapToRespuestaDto(Ficha ficha) =>
+        private static FichaRespuestaDto MapToRespuestaDto(
+            Ficha ficha, List<Educacion> educacion, List<Experiencia> experiencia) =>
             new(
                 ficha.Id,
                 ficha.Nombres,
@@ -112,7 +130,8 @@ namespace Ingresantes.Services
                 ficha.Email,
                 ficha.Sexo,
                 ficha.EstadoCivil,
-                ficha.Educacion, []
+                educacion.Select(e => new EducacionDto(e.Id, e.Institucion, e.TituloObtenido, e.NivelEducativo)).ToList(),
+                experiencia.Select(e => new ExperienciaDto(e.Id, e.Nombre, e.Descripcion, e.Puesto)).ToList()
             );
      }
 
