@@ -1,4 +1,5 @@
 using Ingresantes.Data;
+using Ingresantes.Dto.Ficha;
 using Ingresantes.Dto.Postulaciones;
 using Ingresantes.Exceptions;
 using Ingresantes.Models;
@@ -16,14 +17,17 @@ namespace Ingresantes.Services
         private readonly IFileStorageService _fileStorage;
         private readonly ILogger<PostulacionService> _logger;
         private readonly ITokenService _tokenService;
+        private readonly IFichaService _fichaService;
 
         public PostulacionService(RrhhDbContext context, IFileStorageService fileStorage, 
-                            ILogger<PostulacionService> logger, ITokenService tokenService)
+                            ILogger<PostulacionService> logger, ITokenService tokenService,
+                            IFichaService fichaService)
         {
             _context = context;
             _fileStorage = fileStorage;
             _logger = logger;
             _tokenService = tokenService;
+            _fichaService = fichaService;
         }
 
         private static string GenerarCodigoAcceso()
@@ -176,6 +180,30 @@ namespace Ingresantes.Services
             application.Estado = nuevoEstado;
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<PostulanteDetalleDto?> GetPostulanteDetalleAsync(Guid idPostulacion)
+        {
+            var postulacion = await _context.Postulacion
+                .Include(p => p.Postulante)
+                .Include(p => p.Puesto)
+                .FirstOrDefaultAsync(p => p.Id == idPostulacion);  
+
+            if (postulacion is null) return null;
+
+            var fichaRespuestaDto = await _fichaService.GetByIdAsync(idPostulacion);
+
+            var documentos = await _context.documentos
+                .Where(d => d.PostulacionId == idPostulacion)
+                .Select(d => new DocumentoRespuestaDto(d.Id, d.TipoDocumento, 
+                            d.NombreDocumento, d.UrlArchivo, d.FechaSubida))
+                .ToListAsync();
+
+            return new PostulanteDetalleDto(
+                postulacion.Id,   $"{postulacion.Postulante.Nombre} {postulacion.Postulante.Apellido}",
+                postulacion.Postulante.DNI, postulacion.Puesto.Nombre, postulacion.Estado.ToString(),
+                fichaRespuestaDto, documentos
+            );
         }
 
         public async Task<string> UploadDocumentAsync(Guid applicantId, IFormFile file, int tipoDocumento)

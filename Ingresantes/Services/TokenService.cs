@@ -49,7 +49,7 @@ namespace Ingresantes.Services
 
             var claims = new[]
             {
-                new Claim("PostulanteId", postulacionId.ToString()),
+                new Claim("PostulacionId", postulacionId.ToString()),
                 new Claim("TipoAcceso", "Postulante")   // para distinguirlo de un token de RRHH
             };
 

@@ -25,6 +25,7 @@ builder.Services.AddScoped<IFileStorageService, FileStorageService>(); // o S3, 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFichaService, FichaService>();
+builder.Services.AddScoped<IDocumentoService, DocumentoService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
    .AddJwtBearer(options =>
@@ -45,7 +46,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization(options =>
 {
    options.AddPolicy("SoloAdmin", policy => policy.RequireRole("Admin"));
-   options.AddPolicy("SoloPostulante", policy => policy.RequireClaim("PostulanteId"));
+   options.AddPolicy("SoloPostulante", policy => policy.RequireClaim("PostulacionId"));
 });
 
 builder.Services.AddDbContext<RrhhDbContext>(opt =>

@@ -10,6 +10,7 @@ namespace Ingresantes.Services
         Task<PostulacionRespuestaDto?> GetByIdAsync(Guid id);
         Task<IEnumerable<PostulacionRespuestaDto>> GetAllAsync(bool soloActivos = false);//Guid? postulacionId, string? estado);
         Task<bool> UpdateStatusAsync(Guid id, EstadoPostulacion nuevoEstado);
+        Task<PostulanteDetalleDto?> GetPostulanteDetalleAsync(Guid idPostulacion);
         Task<string> UploadDocumentAsync( Guid postulanteId, IFormFile archivo, int TipoDocumento);
         Task<PostulacionRespuestaDto> VerificarAccesoAsync(string NumeroDocumento, string CodigoAcceso);
     }

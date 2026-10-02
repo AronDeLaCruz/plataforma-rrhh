@@ -13,7 +13,7 @@ public class ApplicantDocumentConfiguration : IEntityTypeConfiguration<Documento
 
         builder.HasOne<Postulacion>()
             .WithMany()
-            .HasForeignKey(d => d.Id)
+            .HasForeignKey(d => d.PostulacionId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

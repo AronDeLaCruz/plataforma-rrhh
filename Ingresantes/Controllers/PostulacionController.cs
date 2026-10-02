@@ -4,6 +4,7 @@ using Ingresantes.Dto.Postulaciones;
 using Ingresantes.Services;
 using Ingresantes.Models;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -46,6 +47,14 @@ public class PostulacionController : ControllerBase
     public async Task<ActionResult<PostulacionRespuestaDto>> GetById(Guid id)
     {
         var result = await _postulacionService.GetByIdAsync(id);
+        return result is null ? NotFound() : Ok(result);
+    }
+
+    [HttpGet("{id:guid}/detalle")]
+    [Authorize]
+    public async Task<ActionResult<PostulanteDetalleDto>> GetPostulanteDetalle(Guid id)
+    {
+        var result = await _postulacionService.GetPostulanteDetalleAsync(id);
         return result is null ? NotFound() : Ok(result);
     }
 
