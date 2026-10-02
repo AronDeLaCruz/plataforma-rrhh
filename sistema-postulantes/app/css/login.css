@@ -1,0 +1,114 @@
+/* app/css/login.css — Estilos de la pantalla de Login */
+
+.login-page {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e40af 130%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 26rem;
+  padding: 2.5rem 2rem;
+  background: #ffffff;
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.35);
+}
+
+.login-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.login-title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.login-subtitle {
+  margin: 0.5rem 0 0;
+  font-size: 0.925rem;
+  color: #64748b;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.login-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.login-field input {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  font-size: 1rem;
+  color: #0f172a;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.625rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.login-field input::placeholder {
+  color: #94a3b8;
+}
+
+.login-field input:focus {
+  border-color: #1d4ed8;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+}
+
+.login-error {
+  margin: 0;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.875rem;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.625rem;
+}
+
+.login-button {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #1d4ed8;
+  border: none;
+  border-radius: 0.625rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+.login-button:hover:not(:disabled) {
+  background: #1e40af;
+}
+
+.login-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
