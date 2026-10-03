@@ -18,16 +18,19 @@ namespace Ingresantes.Services
         private readonly ILogger<PostulacionService> _logger;
         private readonly ITokenService _tokenService;
         private readonly IFichaService _fichaService;
+        private readonly string _basePath;
 
         public PostulacionService(RrhhDbContext context, IFileStorageService fileStorage, 
                             ILogger<PostulacionService> logger, ITokenService tokenService,
-                            IFichaService fichaService)
+                            IFichaService fichaService, IConfiguration configuration,
+                            IWebHostEnvironment env)
         {
             _context = context;
             _fileStorage = fileStorage;
             _logger = logger;
             _tokenService = tokenService;
             _fichaService = fichaService;
+            _basePath = Path.Combine(env.ContentRootPath, configuration["FileStorage:LocalPath"] ?? "UploadedFiles");
         }
 
         private static string GenerarCodigoAcceso()
@@ -206,6 +209,17 @@ namespace Ingresantes.Services
             );
         }
 
+        public async Task<ArchivoInfoDto?> DescargarArchivoAsync(Guid id)
+        {
+            var documento = await _context.documentos.FindAsync(id);
+            if (documento is null) return null;
+
+            var ruta = Path.Combine(_basePath, documento.UrlArchivo.TrimStart('/'));
+            var contentType = ObtenerContentType(documento.NombreDocumento);
+
+            return new ArchivoInfoDto(ruta, documento.NombreDocumento, contentType);
+        }
+
         public async Task<string> UploadDocumentAsync(Guid applicantId, IFormFile file, int tipoDocumento)
         {
             var applicant = await _context.Postulantes.FindAsync(applicantId)
@@ -235,5 +249,18 @@ namespace Ingresantes.Services
                 postulacion.FechaPostulacion,
                 postulacion.CodigoAccesoHash
             );
+
+        private static string ObtenerContentType(string nombreArchivo)
+        {
+            var ext = Path.GetExtension(nombreArchivo).ToLowerInvariant();
+            return ext switch
+            {
+                ".pdf" => "application/pdf",
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".png" => "image/png",
+                ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                _ => "application/octet-stream"
+            };
+        }
     }
 }

@@ -32,4 +32,21 @@ public class PostulanteController : ControllerBase
         var result = await _service.GetByIdAsync(id);
         return result is null ? NotFound() : Ok(result);
     }
+
+    [HttpGet("{dni}/legajo")]
+    [Authorize]
+    public async Task<ActionResult<LegajoPostulanteDto>> GetLegajoByDni(string dni)
+    {
+        var result = await _service.GetLegajoAsync(dni);
+        return result is null ? NotFound() : Ok(result);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<ListadoLegajoPostulanteDto>>> GetListado(
+    [FromQuery] string? letra, [FromQuery] string? busqueda)
+    {
+        var result = await _service.GetListaLegajos(letra, busqueda);
+        return Ok(result);
+    }
 }

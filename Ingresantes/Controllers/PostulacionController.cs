@@ -58,6 +58,19 @@ public class PostulacionController : ControllerBase
         return result is null ? NotFound() : Ok(result);
     }
 
+    [HttpGet("{id:guid}/documento")]
+    [Authorize]
+    public async Task<IActionResult> DescargarArchivo(Guid id)
+    {
+       var result = await _postulacionService.DescargarArchivoAsync(id);
+       if (result is null) return NotFound();
+
+        if (!System.IO.File.Exists(result.RutaFisica))
+            return NotFound("El archivo ya no existe en el servidor.");
+
+        return PhysicalFile(result.RutaFisica, result.ContentType, result.NombreArchivo);
+    }
+
     [HttpPatch("{id:guid}/estado")]
     public async Task<IActionResult> ActualizarEstado(Guid id, [FromBody] EstadoPostulacion dto)
     {

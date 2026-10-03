@@ -34,7 +34,7 @@ namespace Ingresantes.Services
             }
 
             // Devolvemos una URL relativa que se pueda usar para acceder al archivo después
-            return $"{_baseUrl}/{folder}/{uniqueFileName}";
+            return $"{folder}/{uniqueFileName}";
         }
     }
 
