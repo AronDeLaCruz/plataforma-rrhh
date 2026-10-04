@@ -97,6 +97,13 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+   var context = scope.ServiceProvider.GetRequiredService<RrhhDbContext>();
+   await context.Database.MigrateAsync();
+   await DataSeeder.SeedAsync(context);
+}
+
 var uploadsPath = Path.Combine(builder.Environment.ContentRootPath, builder.Configuration["FileStorage:LocalPath"] ?? "UploadedFiles");
 
 if (!Directory.Exists(uploadsPath))

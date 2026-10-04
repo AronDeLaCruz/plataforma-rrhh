@@ -59,7 +59,7 @@ namespace Ingresantes.Services
 
                 var documentos = await _context.documentos
                     .Where(d => d.PostulacionId == p.Id)
-                    .Select(d => new DocumentoResumenDto(d.TipoDocumento, "ACTIVO"))
+                    .Select(d => new DocumentoResumenDto(d.Id,d.TipoDocumento, "ACTIVO"))
                     .ToListAsync();
 
                 resumenes.Add(new ResumenPostulacionDto(

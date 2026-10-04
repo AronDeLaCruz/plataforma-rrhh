@@ -17,6 +17,7 @@ namespace Ingresantes.Data
         public DbSet<Documentos> documentos => Set<Documentos>();
         public DbSet<Ficha> fichas => Set<Ficha>();
         public DbSet<User> Users => Set<User>();
+        public DbSet<TipoDocumentoConfig> TiposDocumento => Set<TipoDocumentoConfig>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

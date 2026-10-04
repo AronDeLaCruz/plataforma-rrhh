@@ -1,4 +1,5 @@
 namespace Ingresantes.Dto.Postulante
 {
-    public record DocumentoResumenDto(int TipoDocumento, string Estado);
+    public record DocumentoResumenDto(
+        Guid id, int TipoDocumento, string Estado);
 }
