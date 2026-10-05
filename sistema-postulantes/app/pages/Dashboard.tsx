@@ -25,14 +25,13 @@ export default function Dashboard() {
   const init = useAuthStore((s) => s.init)
   const logout = useAuthStore((s) => s.logout)
   const { postulantes, save } = usePostulanteStore()
-  const { porDni, subir } = useDocumentoStore()
+  const { porDni, subir, tipos, cargandoTipos, errorTipos, cargarTipos } = useDocumentoStore()
 
   const [modalFicha, setModalFicha] = useState(false)
   const [modalInstrucciones, setModalInstrucciones] = useState(false)
   // Id que devuelve el servidor al registrar la ficha: se usa para confirmar el registro.
   const [fichaRegistrada, setFichaRegistrada] = useState<string | null>(null)
   //const inputRefs = useRef<Record<string, HTMLInputElement | null>>({})
-  const [errores, setErrores] = useState<Record<number, string>>({})
   const [estado, setEstado] = useState<Record<number, { subiendo?: boolean; error?: string }>>({})
 
   // El postulante que inició sesión es quien completa su propia ficha.
@@ -47,11 +46,16 @@ export default function Dashboard() {
     init()
   }, [init])
 
+  // Lista dinámica de tipos de documento desde el API (con fallback a DOCUMENTOS).
+  useEffect(() => {
+    cargarTipos()
+  }, [cargarTipos])
+
+  const docs = tipos.length > 0 ? tipos : DOCUMENTOS
+
   useEffect(() => {
     if (initialized && !isAuthenticated) router.replace("/")
   }, [initialized, isAuthenticated, router])
-
-  if (!initialized || !isAuthenticated) return null
 
   const parche = (id: number, e: { subiendo?: boolean; error?: string }) => setEstado((prev) => ({ ...prev, [id]: e }))
 
@@ -73,10 +77,19 @@ export default function Dashboard() {
   const onArchivo = async (id: number, archivo: File | undefined) => {
 
     if (!archivo) return
-    const setError = (msg: string) => setErrores((prev) => ({ ...prev, [id]: msg }))
+    const setError = (msg: string) => parche(id, { error: msg })
 
-    if (archivo.type !== "application/pdf") return setError("Solo se permiten archivos PDF.")
-    if (archivo.size > MAX_BYTES) return setError("El archivo no debe superar los 5 MB.")
+    // Validación dinámica según el tipo de documento del API.
+    const tipo = docs.find((d) => d.id === id)
+    const exts = (tipo?.extensionesPermitidas ?? ".pdf").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean)
+    const extArchivo = `.${archivo.name.split(".").pop()?.toLowerCase() ?? ""}`
+    if (exts.length > 0 && !exts.includes(extArchivo)) {
+      return setError(`Solo se permite: ${tipo?.extensionesPermitidas ?? ".pdf"}.`)
+    }
+    const maxBytes = tipo?.tamanoMaximoBytes ?? MAX_BYTES
+    if (archivo.size > maxBytes) {
+      return setError(`El archivo no debe superar los ${(maxBytes / 1024 / 1024).toFixed(maxBytes >= 10000000 ? 0 : 1)} MB.`)
+    }
     
     parche(id, {subiendo:true})
     try {
@@ -89,10 +102,9 @@ export default function Dashboard() {
         : "Error inesperado."
       parche(id, { error: typeof msg === "string" ? msg : "No se pudo subir el archivo." })
     }
-
-    setErrores(({ [id]: _, ...resto }) => resto)
-    subir(dniLogin, id, archivo.name)
   }
+
+  if (!initialized || !isAuthenticated) return null
 
   return (
     <div className="min-h-screen bg-slate-100 p-6">
@@ -162,14 +174,28 @@ export default function Dashboard() {
       <section id="documentacion">
         <h2 className="mb-1 text-lg font-semibold text-slate-700">Documentación requerida</h2>
         <p className="mb-4 text-sm text-slate-500">
-          Adjunta tus documentos en formato <strong>PDF</strong>. Puedes hacerlo gradualmente.
+          Adjunta tus documentos en los formatos indicados. Puedes hacerlo gradualmente.
         </p>
+        {cargandoTipos && (
+          <p className="mb-4 text-sm text-slate-500">Cargando lista de documentos…</p>
+        )}
+        {errorTipos && (
+          <div role="alert" className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
+            <span>{errorTipos} Se muestra la lista local.</span>
+            <button type="button" onClick={() => cargarTipos()} className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-700">
+              Reintentar
+            </button>
+          </div>
+        )}
         <div className="grid gap-3 sm:grid-cols-2">
-          {DOCUMENTOS.map((doc) => (
+          {docs.map((doc) => (
             <DocumentoCard
               key={doc.id}
               id={doc.id}
               nombre={doc.nombre}
+              requerido={doc.requerido}
+              extensionesPermitidas={doc.extensionesPermitidas}
+              tamanoMaximoBytes={doc.tamanoMaximoBytes}
               archivo={misDocs[doc.id]}
               error={estado[doc.id]?.error}
               subiendo={estado[doc.id]?.subiendo}

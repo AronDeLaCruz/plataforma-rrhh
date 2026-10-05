@@ -20,6 +20,12 @@ namespace Ingresantes.Services
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
         {
+            var hayUsuarios = await _context.Users.AnyAsync();
+            if (hayUsuarios)
+                throw new BusinessRuleException("El registro público está cerrado. Pedile a un administrador que te cree una cuenta.");
+
+            var rolInicial = "Admin";
+
             var existe = await _context.Users.AnyAsync(u => u.Email == dto.Email);
             if (existe)
                 throw new ConflictException("Ya existe un usuario con ese email.");
@@ -30,7 +36,8 @@ namespace Ingresantes.Services
                 Nombre = dto.Nombre,
                 Email = dto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Rol = "RRHH"
+                Rol = rolInicial,
+                Activo = true
             };
 
             _context.Users.Add(user);

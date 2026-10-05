@@ -8,5 +8,6 @@ namespace Ingresantes.Models
         public string PasswordHash { get; set; } = default!;
         public string Rol { get; set; } = "RRHH"; // RRHH, Admin
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
+        public bool Activo {get; set;} = true;
     }
 }

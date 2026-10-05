@@ -2,6 +2,7 @@ import axios from "axios";
 import type { Postulante } from "../types/postulante";
 import type { User } from "../types/auth";
 import type { CrearFichaDto, FichaRespuestaDto } from "../types/ficha";
+import type { TipoDocumentoDto } from "../types/documento";
 
 const API_URL = "http://localhost:5253/api"; //(import.meta.env.NEXT_URL ?? "http://localhost:5253/api").replace(
  // /\/$/,
@@ -82,6 +83,10 @@ export const documentoService = {
     const response = await api.post(`/Documento/${idPostulacion}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
+    return response.data;
+  }, 
+  listado: async(): Promise<TipoDocumentoDto[]> => {
+    const response = await api.get<TipoDocumentoDto[]>("/TipoDocumento/postulante");
     return response.data;
   }
 }
