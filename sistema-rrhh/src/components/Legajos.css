@@ -1,0 +1,518 @@
+.legajos-view {
+    text-align: left;
+    color: var(--text);
+}
+
+.legajos-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.legajos-navbar h2 {
+    margin: 0 0 4px;
+    color: var(--text-h);
+}
+
+.legajos-navbar p {
+    margin: 0;
+}
+
+/* Buscador */
+.legajos-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.legajos-search input {
+    width: 280px;
+    padding: 10px 36px 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background-color: var(--bg);
+    color: var(--text);
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.legajos-search input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+}
+
+.legajos-search .search-icon {
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
+}
+
+/* Navegación por letras (A-Z) */
+.letras {
+    margin-bottom: 20px;
+    overflow-x: auto;
+    /* Varias letras no escapan del contenedor */
+    -webkit-overflow-scrolling: touch;
+}
+
+.letras ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 6px;
+}
+
+.letras li button {
+    min-width: 34px;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--bg);
+    color: var(--text);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.letras li button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.letras li button.selected {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+/* Tabla de legajos */
+.legajos-table-wrap {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+}
+
+.legajos-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.legajos-table th,
+.legajos-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.legajos-table thead th {
+    background-color: #f3f2f5;
+    color: var(--text-h);
+    border-bottom: 2px solid var(--border);
+    font-weight: 600;
+}
+
+.legajos-table tbody tr {
+    border-bottom: 1px solid var(--border);
+}
+
+.legajos-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.legajos-table tbody tr:hover {
+    background-color: #faf9fb;
+}
+
+.codigo-documento {
+    font-family: var(--mono);
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-bg);
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+/* Estado */
+.estado-activo {
+    background-color: #27ae60;
+    color: white;
+}
+
+.estado-inactivo {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.empty-row {
+    text-align: center;
+    padding: 24px;
+    color: var(--text);
+    opacity: 0.8;
+}
+
+/* Aviso cuando el listado se muestra con datos de ejemplo */
+.legajos-aviso {
+    margin: 0 0 12px;
+    padding: 10px 12px;
+    border: 1px solid #f0d9a8;
+    border-radius: 8px;
+    background-color: #fdf3d8;
+    color: #9a6700;
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+/* Filas clickeables de la tabla */
+.legajos-table tbody tr.clickable-row {
+    cursor: pointer;
+}
+
+/* Modal de detalle del legajo */
+.legajo-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.legajo-modal {
+    background-color: var(--bg);
+    border-radius: 12px;
+    width: 780px;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow);
+    color: var(--text);
+}
+
+.legajo-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.legajo-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+}
+
+.legajo-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--accent-bg);
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.legajo-header-nombre {
+    margin: 0 0 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-h);
+}
+
+.legajo-header-sub {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.legajo-header-cargo {
+    color: var(--text);
+    opacity: 0.8;
+}
+
+.legajo-modal-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--text);
+    padding: 4px 8px;
+    border-radius: 6px;
+    line-height: 1;
+}
+
+.legajo-modal-close:hover {
+    background-color: var(--accent-bg);
+    color: var(--accent);
+}
+
+/* Datos del empleado */
+.legajo-datos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px 20px;
+    padding: 20px;
+    background-color: #f8f7fa;
+    border-bottom: 1px solid var(--border);
+}
+
+.legajo-dato {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.legajo-dato > span {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-bottom: 4px;
+}
+
+.legajo-dato > strong {
+    color: var(--text-h);
+    word-break: break-word;
+}
+
+/* Resumen de postulaciones */
+.legajo-postulaciones {
+    padding: 20px;
+}
+
+.legajo-seccion-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.legajo-seccion-head h4 {
+    margin: 0;
+    color: var(--text-h);
+    font-size: 1rem;
+}
+
+.legajo-contador {
+    font-size: 0.72rem;
+    font-weight: 600;
+    min-width: 22px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background-color: var(--accent-bg);
+    color: var(--accent);
+    text-align: center;
+}
+
+.postulaciones-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 12px;
+}
+
+.postulacion-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: var(--bg);
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.postulacion-card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+}
+
+.postulacion-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.postulacion-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.postulacion-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.estado-aprobado { background-color: #27ae60; }
+.estado-rechazado { background-color: #c0392b; }
+.estado-pendiente { background-color: #b9770e; }
+
+.postulacion-fecha {
+    font-size: 0.72rem;
+    opacity: 0.7;
+}
+
+.postulacion-puesto {
+    font-weight: 600;
+    color: var(--text-h);
+    font-size: 0.95rem;
+}
+
+.postulacion-docs {
+    font-size: 0.78rem;
+    opacity: 0.8;
+}
+
+.postulacion-bar {
+    display: block;
+    height: 6px;
+    border-radius: 999px;
+    background-color: var(--accent-bg);
+    overflow: hidden;
+}
+
+.postulacion-bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background-color: var(--accent);
+}
+
+.postulacion-cta {
+    margin-top: auto;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.legajo-no-files {
+    margin: 0;
+    color: var(--text);
+    opacity: 0.75;
+    text-align: left;
+}
+
+.file-tipo {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background-color: var(--accent-bg);
+    color: var(--accent);
+    white-space: nowrap;
+}
+
+.file-tipo-contrato { background-color: #e7f6ee; color: #1d7a4f; }
+.file-tipo-pago { background-color: #fdf3d8; color: #9a6700; }
+.file-tipo-certificado { background-color: #e8eefb; color: #34518a; }
+/* Estados del documento (el detalle por DNI solo informa el estado del archivo) */
+.file-tipo-activo { background-color: #e7f6ee; color: #1d7a4f; }
+.file-tipo-pendiente { background-color: #fdf3d8; color: #9a6700; }
+.file-tipo-inactivo { background-color: #f2f2f3; color: #5f6368; }
+/* Ficha de datos del postulante */
+.file-tipo-datos { background-color: #efe9fb; color: #5b3fa8; }
+
+/* Modal secundario: detalle de la postulación con visor de PDF */
+.legajo-detalle-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1200;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.legajo-detalle-modal {
+    background-color: var(--bg);
+    border-radius: 12px;
+    width: 940px;
+    max-width: 100%;
+    height: 84vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    color: var(--text);
+}
+
+.legajo-detalle-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-h);
+}
+
+.legajo-detalle-subtitulo {
+    margin: 0;
+    font-size: 0.82rem;
+    opacity: 0.75;
+}
+
+/* Reutiliza el panel de documentos y el visor de Postulantes.css */
+.legajo-detalle-body {
+    display: grid;
+    grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+    gap: 18px;
+    flex: 1;
+    min-height: 0;
+    padding: 18px 20px;
+    text-align: left;
+}
+
+.legajo-detalle-body .doc-preview-body {
+    padding: 12px;
+}
+
+@media (max-width: 760px) {
+    .legajo-detalle-modal {
+        height: 90vh;
+    }
+
+    .legajo-detalle-body {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+    }
+
+    .legajo-detalle-body .doc-panel {
+        max-height: 40vh;
+    }
+}

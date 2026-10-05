@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Policy = "SoloAdmin")]
+[Authorize]//(Policy = "SoloAdmin")
 public class UsuarioController : ControllerBase
 {
     private readonly IUsuarioService _service;
