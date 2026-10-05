@@ -15,7 +15,7 @@ Sistema integral de gestión de postulantes y procesos de contratación, desarro
 - [Flujos principales](#flujos-principales)
 - [Roadmap](#roadmap)
 
-##Qué resuelve
+## Qué resuelve
 Un proceso de contratación típicamente involucra tres actores con necesidades distintas: el candidato que postula y sube documentación, el equipo de RRHH que revisa y aprueba esa documentación, y un historial que agrupa todas las postulaciones de una misma persona a lo largo del tiempo. Este proyecto separa esas tres necesidades en piezas independientes (dos frontends + un backend compartido) en vez de forzarlas dentro de una sola aplicación monolítica.
 
 ## Arquitectura
