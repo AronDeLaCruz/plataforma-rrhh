@@ -81,7 +81,6 @@ Se decidió separar el frontend del candidato del frontend de RRHH en dos aplica
   /frontend-admin           → React (panel de RRHH)
 ```
 
-> Ajustá los nombres de carpeta según cómo los hayas nombrado realmente en tu repo.
 
 ## Cómo levantar el proyecto
 
