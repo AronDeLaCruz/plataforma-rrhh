@@ -175,4 +175,5 @@ Entidades principales y sus relaciones:
 
 ---
 
-Proyecto desarrollado por Aron Alonso De La Cruz Gutiérrez como parte de su portafolio profesional.
+Autor:
+Aron Alonso De La Cruz Gutiérrez 
