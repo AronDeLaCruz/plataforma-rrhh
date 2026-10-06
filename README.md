@@ -130,7 +130,7 @@ dotnet ef database update
 dotnet run
 ```
 
-Al arrancar contra una base vacía, el sistema siembra automáticamente los tipos de documento, el usuario Admin y vacantes de ejemplo. Revisá la consola o el `DataSeeder` para las credenciales iniciales del Admin.
+Al arrancar contra una base vacía, el sistema siembra automáticamente los tipos de documento, el usuario Admin y vacantes de ejemplo. 
 
 La API queda disponible en `http://localhost:5253` (o el puerto configurado), con Swagger en `/swagger`.
 
