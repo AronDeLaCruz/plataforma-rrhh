@@ -150,8 +150,6 @@ npm install
 npm run dev
 ```
 
-Confirmá que la URL de cada frontend esté incluida en la política de CORS del backend (`Program.cs` → `Frontend:Urls`).
-
 ## Variables de entorno
 
 **Backend (`appsettings.json` / user-secrets)**
